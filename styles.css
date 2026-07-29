@@ -22,6 +22,12 @@
   font-display: swap;
 }
 
+@property --orbit-angle {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 0deg;
+}
+
 :root {
   --bg: #050505;
   --ink: #f2f2f2;
@@ -265,25 +271,62 @@ body {
 }
 
 input[type="text"],
+input[type="number"],
 textarea {
   width: 100%;
-  border: 1px solid var(--line);
+  border: 1px solid transparent;
   border-radius: 16px;
-  background: rgba(255, 255, 255, 0.05);
   padding: 0.95rem 1rem;
   font: inherit;
   font-family: var(--font);
   color: #fff;
-  transition: border-color 0.15s ease, background 0.15s ease, box-shadow 0.15s ease;
   resize: vertical;
+  --orbit-angle: 0deg;
+  background:
+    linear-gradient(rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.05)) padding-box,
+    linear-gradient(rgba(255, 255, 255, 0.14), rgba(255, 255, 255, 0.14)) border-box;
+  background-origin: border-box;
+  background-clip: padding-box, border-box;
+  transition: background 0.2s ease;
 }
 
 input[type="text"]:focus,
+input[type="number"]:focus,
 textarea:focus {
   outline: none;
-  border-color: var(--line-strong);
-  background: rgba(255, 255, 255, 0.08);
-  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.06);
+  background:
+    linear-gradient(rgba(18, 18, 18, 0.92), rgba(18, 18, 18, 0.92)) padding-box,
+    conic-gradient(
+      from var(--orbit-angle),
+      rgba(255, 255, 255, 0.05) 0deg,
+      rgba(255, 255, 255, 0.08) 60deg,
+      rgba(255, 255, 255, 0.95) 110deg,
+      rgba(255, 255, 255, 0.35) 145deg,
+      rgba(255, 255, 255, 0.06) 190deg,
+      rgba(255, 255, 255, 0.05) 360deg
+    ) border-box;
+  background-origin: border-box;
+  background-clip: padding-box, border-box;
+  animation: orbit-stroke 2.8s cubic-bezier(0.75, 0.02, 0.25, 0.98) infinite;
+}
+
+@keyframes orbit-stroke {
+  0% { --orbit-angle: 0deg; }
+  18% { --orbit-angle: 130deg; }
+  50% { --orbit-angle: 195deg; }
+  82% { --orbit-angle: 320deg; }
+  100% { --orbit-angle: 360deg; }
+}
+
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type="number"] {
+  -moz-appearance: textfield;
+  appearance: textfield;
 }
 
 input::placeholder,
@@ -363,6 +406,7 @@ fieldset.field {
   border-radius: 16px;
   padding: 0.95rem 1.1rem;
   background: rgba(255, 255, 255, 0.05);
+  color: #fff;
 }
 
 .seg-opt:hover span,
@@ -372,9 +416,10 @@ fieldset.field {
 }
 
 .seg-opt input:checked + span,
-.yn-opt input:checked + span {
-  background: var(--glass-pill-active);
-  border-color: transparent;
+.yn-opt input:checked + span,
+.seg.stack .seg-opt input:checked + span {
+  background: #ffffff;
+  border-color: #ffffff;
   color: #0a0a0a;
 }
 
@@ -543,6 +588,134 @@ fieldset.field {
   animation: shake 0.35s ease;
 }
 
+.backlog-list {
+  display: grid;
+  gap: 0.75rem;
+  margin-top: 0.35rem;
+  max-height: min(52vh, 520px);
+  overflow: auto;
+  padding-right: 0.15rem;
+}
+
+.backlog-card {
+  appearance: none;
+  width: 100%;
+  text-align: left;
+  cursor: pointer;
+  color: inherit;
+  font: inherit;
+  padding: 1rem 1.05rem;
+  border-radius: 20px;
+  border: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.04);
+  transition: border-color 0.15s ease, background 0.15s ease, transform 0.12s ease;
+}
+
+.backlog-card:hover {
+  background: rgba(255, 255, 255, 0.07);
+  border-color: var(--line-strong);
+}
+
+.backlog-card.selected {
+  border-color: rgba(255, 255, 255, 0.55);
+  background: rgba(255, 255, 255, 0.1);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.12);
+}
+
+.backlog-card-top {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin-bottom: 0.55rem;
+}
+
+.backlog-status,
+.backlog-estimate {
+  font-size: 0.7rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.backlog-card h3,
+.backlog-detail h3 {
+  margin: 0 0 0.45rem;
+  font-family: var(--display);
+  font-weight: 400;
+  font-size: 1.25rem;
+  color: #fff;
+}
+
+.backlog-summary {
+  margin: 0 0 0.85rem;
+  color: var(--ink-soft);
+  font-size: 0.92rem;
+}
+
+.backlog-meta {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.65rem;
+  margin-bottom: 0.85rem;
+}
+
+.backlog-meta.detail-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.backlog-meta > div {
+  display: grid;
+  gap: 0.2rem;
+  font-size: 0.88rem;
+}
+
+.meta-label {
+  display: block;
+  font-size: 0.68rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 0.2rem;
+}
+
+.backlog-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  align-items: center;
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  min-height: 1.7rem;
+  padding: 0 0.7rem;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.06);
+  font-size: 0.78rem;
+  color: var(--ink);
+}
+
+.backlog-detail {
+  margin: 0.25rem 0 1rem;
+  padding: 1rem 1.05rem;
+  border-radius: 20px;
+  border: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.backlog-why {
+  margin: 0.9rem 0 0;
+  color: var(--ink-soft);
+  font-size: 0.92rem;
+}
+
+.field-label em {
+  font-family: var(--mix);
+  font-style: italic;
+}
+
 @keyframes settle {
   from { opacity: 0; transform: translateY(10px); }
   to { opacity: 1; transform: translateY(0); }
@@ -574,6 +747,14 @@ fieldset.field {
   .actions {
     bottom: 0.75rem;
     border-radius: 22px;
+  }
+
+  .backlog-meta {
+    grid-template-columns: 1fr;
+  }
+
+  .backlog-meta.detail-grid {
+    grid-template-columns: 1fr;
   }
 }
 

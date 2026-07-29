@@ -43,22 +43,13 @@
     </aside>
 
     <form id="scorecard" class="form" novalidate>
-      <!-- 1 -->
-      <section class="step" data-step="0" data-section="About the ask">
-        <p class="eyebrow">About the ask</p>
-        <h1>What are you working on?</h1>
-        <p class="lede">Give it a clear working title.</p>
-        <label class="field">
-          <span class="field-label">Initiative title</span>
-          <input type="text" name="title" placeholder="e.g. Discover module: Build to Learn" autocomplete="off" required />
-        </label>
-      </section>
+      <input type="hidden" name="backlogId" id="backlogId" value="" />
 
-      <!-- 2 -->
-      <section class="step" data-step="1" data-section="About the ask" hidden>
+      <!-- Type first -->
+      <section class="step" data-id="type" data-section="About the ask">
         <p class="eyebrow">About the ask</p>
         <h1>What type of ask is this?</h1>
-        <p class="lede">Pick the closest fit.</p>
+        <p class="lede">Pick the closest fit. Backlog items are already pointed at Leap's north star.</p>
         <fieldset class="field">
           <legend class="sr-only">Initiative type</legend>
           <div class="seg stack" role="radiogroup" aria-label="Initiative type">
@@ -78,30 +69,60 @@
         </fieldset>
       </section>
 
-      <!-- 3 -->
-      <section class="step" data-step="2" data-section="About the ask" hidden>
+      <!-- Backlog picker (backlog path only) -->
+      <section class="step" data-id="backlog" data-section="Preferred backlog" hidden>
+        <p class="eyebrow">Preferred backlog</p>
+        <h1>Choose a curated initiative</h1>
+        <p class="lede">These already map to Leap's north star. Pick one to claim.</p>
+        <div class="backlog-list" id="backlogList" role="listbox" aria-label="Bench backlog"></div>
+      </section>
+
+      <!-- Backlog confirm -->
+      <section class="step" data-id="backlog-confirm" data-section="Preferred backlog" hidden>
+        <p class="eyebrow">Preferred backlog</p>
+        <h1>You're claiming this</h1>
+        <p class="lede">Confirm the pick, then tell us how it levels you up.</p>
+        <article class="backlog-detail" id="backlogDetail"></article>
+        <label class="field">
+          <span class="field-label">How does this level <em>you</em> up?</span>
+          <textarea name="individualBacklog" rows="3" placeholder="e.g. I'll deepen CMS product craft while shipping something the studio already needs"></textarea>
+        </label>
+      </section>
+
+      <!-- Custom path: title -->
+      <section class="step" data-id="title" data-section="About the ask" hidden>
+        <p class="eyebrow">About the ask</p>
+        <h1>What are you working on?</h1>
+        <p class="lede">Give it a clear working title.</p>
+        <label class="field">
+          <span class="field-label">Initiative title</span>
+          <input type="text" name="title" placeholder="e.g. Discover module: Build to Learn" autocomplete="off" />
+        </label>
+      </section>
+
+      <!-- Custom path: description -->
+      <section class="step" data-id="description" data-section="About the ask" hidden>
         <p class="eyebrow">About the ask</p>
         <h1>In one or two sentences</h1>
         <p class="lede">What will you make or learn?</p>
         <label class="field">
           <span class="field-label">Short description</span>
-          <textarea name="description" rows="4" placeholder="e.g. A short Discover module that teaches Build to Learn through a real client brief" required></textarea>
+          <textarea name="description" rows="4" placeholder="e.g. A short Discover module that teaches Build to Learn through a real client brief"></textarea>
         </label>
       </section>
 
-      <!-- 4 -->
-      <section class="step" data-step="3" data-section="Four vectors" hidden>
+      <!-- Vectors: custom path -->
+      <section class="step" data-id="individual" data-section="Four vectors" hidden>
         <p class="eyebrow">Four vectors · 1 of 4</p>
         <h1>Does it level <em>me</em> up?</h1>
         <p class="lede">How does this grow your craft, confidence, or career?</p>
         <label class="field">
           <span class="field-label">Your answer</span>
-          <textarea name="individual" rows="4" placeholder="e.g. I'll practise scoping a product experiment end to end, from hypothesis to share-out" required></textarea>
+          <textarea name="individual" rows="4" placeholder="e.g. I'll practise scoping a product experiment end to end, from hypothesis to share-out"></textarea>
         </label>
       </section>
 
-      <!-- 5 -->
-      <section class="step" data-step="4" data-section="Four vectors" hidden>
+      <section class="step" data-id="department" data-section="Four vectors" hidden>
         <p class="eyebrow">Four vectors · 2 of 4</p>
         <h1>Does it level <em>my department</em> up?</h1>
         <p class="lede">Yes or no, then a line of evidence.</p>
@@ -121,8 +142,7 @@
         </label>
       </section>
 
-      <!-- 6 -->
-      <section class="step" data-step="5" data-section="Four vectors" hidden>
+      <section class="step" data-id="business" data-section="Four vectors" hidden>
         <p class="eyebrow">Four vectors · 3 of 4</p>
         <h1>Does AKQA need it?</h1>
         <p class="lede">Growth, margin, key accounts, projects → products.</p>
@@ -142,8 +162,7 @@
         </label>
       </section>
 
-      <!-- 7 -->
-      <section class="step" data-step="6" data-section="Four vectors" hidden>
+      <section class="step" data-id="client" data-section="Four vectors" hidden>
         <p class="eyebrow">Four vectors · 4 of 4</p>
         <h1>Is there client pull for this work?</h1>
         <p class="lede">Existing client, or one we cannot win yet without this?</p>
@@ -167,18 +186,17 @@
         </label>
       </section>
 
-      <!-- 8 -->
-      <section class="step" data-step="7" data-section="Logistics" hidden>
+      <section class="step" data-id="logistics" data-section="Logistics" hidden>
         <p class="eyebrow">Logistics</p>
         <h1>Scope it like a mini-project</h1>
         <p class="lede">Estimate, definition of done, and whether you will share it.</p>
         <label class="field">
-          <span class="field-label">Estimate</span>
-          <input type="text" name="estimate" placeholder="e.g. 3 days / 12 hours" required />
+          <span class="field-label">Estimate (days)</span>
+          <input type="number" name="estimate" inputmode="decimal" min="0.5" step="0.5" placeholder="e.g. 3" />
         </label>
         <label class="field">
           <span class="field-label">Definition of done</span>
-          <textarea name="done" rows="3" placeholder="e.g. Module outline, one worked example, and a 5-minute studio share deck" required></textarea>
+          <textarea name="done" rows="3" placeholder="e.g. Module outline, one worked example, and a 5-minute studio share deck"></textarea>
         </label>
         <label class="check">
           <input type="checkbox" name="willingToShare" />
