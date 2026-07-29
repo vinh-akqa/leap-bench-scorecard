@@ -7,7 +7,6 @@
   const sectionLabel = document.getElementById("sectionLabel");
   const progressFill = document.getElementById("progressFill");
   const progressTrack = document.querySelector(".progress-track");
-  const progressDots = document.getElementById("progressDots");
   const progressWrap = document.getElementById("progressWrap");
 
   const backBtn = document.getElementById("backBtn");
@@ -43,9 +42,6 @@
       detail: "Sent to the bench initiatives owner. Not a flat no: expect a redirect.",
     },
   };
-
-  progressDots.innerHTML = steps.map(() => "<span></span>").join("");
-  const dots = Array.from(progressDots.children);
 
   function value(name) {
     const el = form.elements.namedItem(name);
@@ -125,11 +121,6 @@
     progressTrack.setAttribute("aria-valuenow", String(Math.round(pct)));
     stepLabel.textContent = `Step ${current + 1} of ${total}`;
     sectionLabel.textContent = steps[current].dataset.section || "";
-
-    dots.forEach((dot, i) => {
-      dot.classList.toggle("done", i < current);
-      dot.classList.toggle("current", i === current);
-    });
 
     backBtn.hidden = current === 0;
     nextBtn.textContent = current === total - 1 ? "See result" : "Continue";
