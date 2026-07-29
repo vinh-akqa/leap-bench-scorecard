@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Leap Bench Scorecard · Prototype</title>
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <div class="atmosphere" aria-hidden="true"></div>
+  <div class="grain" aria-hidden="true"></div>
+
+  <header class="top">
+    <div class="brand">
+      <img
+        class="brand-logo"
+        src="./assets/logos/AKQALeap_White.png"
+        alt="AKQA Leap"
+        width="148"
+        height="37"
+      />
+    </div>
+    <p class="proto-tag">Prototype · not live</p>
+  </header>
+
+  <main class="shell">
+    <div class="progress-wrap" id="progressWrap">
+      <div class="progress-meta">
+        <span id="stepLabel">Step 1 of 8</span>
+        <span id="sectionLabel">About the ask</span>
+      </div>
+      <div class="progress-track" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="12" aria-labelledby="stepLabel">
+        <div class="progress-fill" id="progressFill"></div>
+      </div>
+      <div class="progress-dots" id="progressDots" aria-hidden="true"></div>
+    </div>
+
+    <aside class="result" id="resultPanel" data-tone="idle" aria-live="polite" hidden>
+      <div class="result-light" aria-hidden="true"></div>
+      <div class="result-copy">
+        <p class="result-label" id="resultLabel">Waiting on answers</p>
+        <p class="result-detail" id="resultDetail">Answer the vectors to see your traffic light.</p>
+      </div>
+    </aside>
+
+    <form id="scorecard" class="form" novalidate>
+      <!-- 1 -->
+      <section class="step" data-step="0" data-section="About the ask">
+        <p class="eyebrow">About the ask</p>
+        <h1>What are you working on?</h1>
+        <p class="lede">Give it a clear working title.</p>
+        <label class="field">
+          <span class="field-label">Initiative title</span>
+          <input type="text" name="title" placeholder="e.g. Discover module: Build to Learn" autocomplete="off" required />
+        </label>
+      </section>
+
+      <!-- 2 -->
+      <section class="step" data-step="1" data-section="About the ask" hidden>
+        <p class="eyebrow">About the ask</p>
+        <h1>What type of ask is this?</h1>
+        <p class="lede">Pick the closest fit.</p>
+        <fieldset class="field">
+          <legend class="sr-only">Initiative type</legend>
+          <div class="seg stack" role="radiogroup" aria-label="Initiative type">
+            <label class="seg-opt">
+              <input type="radio" name="type" value="project" checked />
+              <span>Project idea</span>
+            </label>
+            <label class="seg-opt">
+              <input type="radio" name="type" value="training" />
+              <span>Training</span>
+            </label>
+            <label class="seg-opt">
+              <input type="radio" name="type" value="backlog" />
+              <span>Pick from backlog</span>
+            </label>
+          </div>
+        </fieldset>
+      </section>
+
+      <!-- 3 -->
+      <section class="step" data-step="2" data-section="About the ask" hidden>
+        <p class="eyebrow">About the ask</p>
+        <h1>In one or two sentences</h1>
+        <p class="lede">What will you make or learn?</p>
+        <label class="field">
+          <span class="field-label">Short description</span>
+          <textarea name="description" rows="4" placeholder="Keep it concrete. What does this become?" required></textarea>
+        </label>
+      </section>
+
+      <!-- 4 -->
+      <section class="step" data-step="3" data-section="Four vectors" hidden>
+        <p class="eyebrow">Four vectors · 1 of 4</p>
+        <h1>Does it level <em>me</em> up?</h1>
+        <p class="lede">How does this grow your craft, confidence, or career?</p>
+        <label class="field">
+          <span class="field-label">Your answer</span>
+          <textarea name="individual" rows="4" placeholder="Be specific about what you will learn or practise." required></textarea>
+        </label>
+      </section>
+
+      <!-- 5 -->
+      <section class="step" data-step="4" data-section="Four vectors" hidden>
+        <p class="eyebrow">Four vectors · 2 of 4</p>
+        <h1>Does it level <em>my department</em> up?</h1>
+        <p class="lede">Yes or no, then a line of evidence.</p>
+        <div class="yn" role="radiogroup" aria-label="Department benefit">
+          <label class="yn-opt">
+            <input type="radio" name="department" value="yes" />
+            <span>Yes</span>
+          </label>
+          <label class="yn-opt">
+            <input type="radio" name="department" value="no" />
+            <span>No</span>
+          </label>
+        </div>
+        <label class="field">
+          <span class="field-label soft">Evidence</span>
+          <textarea name="departmentEvidence" rows="3" placeholder="What does the team or department gain?"></textarea>
+        </label>
+      </section>
+
+      <!-- 6 -->
+      <section class="step" data-step="5" data-section="Four vectors" hidden>
+        <p class="eyebrow">Four vectors · 3 of 4</p>
+        <h1>Does AKQA need it?</h1>
+        <p class="lede">Growth, margin, key accounts, projects → products.</p>
+        <div class="yn" role="radiogroup" aria-label="AKQA need">
+          <label class="yn-opt">
+            <input type="radio" name="business" value="yes" />
+            <span>Yes</span>
+          </label>
+          <label class="yn-opt">
+            <input type="radio" name="business" value="no" />
+            <span>No</span>
+          </label>
+        </div>
+        <label class="field">
+          <span class="field-label soft">Evidence</span>
+          <textarea name="businessEvidence" rows="3" placeholder="Why does the business need this now?"></textarea>
+        </label>
+      </section>
+
+      <!-- 7 -->
+      <section class="step" data-step="6" data-section="Four vectors" hidden>
+        <p class="eyebrow">Four vectors · 4 of 4</p>
+        <h1>Is there client pull for this work?</h1>
+        <p class="lede">Existing client, or one we cannot win yet without this?</p>
+        <div class="yn" role="radiogroup" aria-label="Client pull">
+          <label class="yn-opt">
+            <input type="radio" name="client" value="yes" />
+            <span>Yes</span>
+          </label>
+          <label class="yn-opt">
+            <input type="radio" name="client" value="no" />
+            <span>No</span>
+          </label>
+          <label class="yn-opt">
+            <input type="radio" name="client" value="na" />
+            <span>N/A</span>
+          </label>
+        </div>
+        <label class="field">
+          <span class="field-label soft">Evidence <span class="optional">optional</span></span>
+          <textarea name="clientEvidence" rows="3" placeholder="Who cares about this, and why?"></textarea>
+        </label>
+      </section>
+
+      <!-- 8 -->
+      <section class="step" data-step="7" data-section="Logistics" hidden>
+        <p class="eyebrow">Logistics</p>
+        <h1>Scope it like a mini-project</h1>
+        <p class="lede">Estimate, definition of done, and whether you will share it.</p>
+        <label class="field">
+          <span class="field-label">Estimate</span>
+          <input type="text" name="estimate" placeholder="e.g. 3 days / 12 hours" required />
+        </label>
+        <label class="field">
+          <span class="field-label">Definition of done</span>
+          <textarea name="done" rows="3" placeholder="What will exist when you stop the chess-clock?" required></textarea>
+        </label>
+        <label class="check">
+          <input type="checkbox" name="willingToShare" />
+          <span>Willing to present at studio share</span>
+        </label>
+      </section>
+
+      <div class="actions" id="navActions">
+        <button type="button" class="btn ghost" id="backBtn" hidden>Back</button>
+        <button type="button" class="btn primary" id="nextBtn">Continue</button>
+      </div>
+    </form>
+
+    <section class="submitted" id="submitted" hidden>
+      <p class="eyebrow">Result</p>
+      <h1 id="submittedTitle">Submitted</h1>
+      <aside class="result inline" id="finalResult" data-tone="idle">
+        <div class="result-light" aria-hidden="true"></div>
+        <div class="result-copy">
+          <p class="result-label" id="finalLabel"></p>
+          <p class="result-detail" id="finalDetail"></p>
+        </div>
+      </aside>
+      <p id="submittedBody"></p>
+      <div class="actions">
+        <button type="button" class="btn ghost" id="editAgain">Edit answers</button>
+        <button type="button" class="btn primary" id="startOver">Start over</button>
+      </div>
+    </section>
+  </main>
+
+  <footer class="foot">
+    <span>AKQA Leap · Bench Initiatives Allocation Framework</span>
+    <span>Demo only · weights provisional pending SLT</span>
+  </footer>
+
+  <script src="./app.js"></script>
+</body>
+</html>
