@@ -141,9 +141,9 @@
 
   function buildPath() {
     if (isBacklogPath()) {
-      return ["type", "backlog", "backlog-confirm", "logistics"];
+      return ["before", "type", "backlog", "backlog-confirm", "logistics"];
     }
-    return ["type", "title", "description", "individual", "department", "business", "client", "logistics"];
+    return ["before", "type", "title", "description", "individual", "department", "business", "client", "logistics"];
   }
 
   function selectedItem() {
@@ -254,7 +254,7 @@
     const id = path[current];
     const step = stepById[id];
 
-    if (id === "type") return true;
+    if (id === "before" || id === "type") return true;
 
     if (id === "backlog") {
       if (!selectedBacklogId) {
@@ -390,7 +390,8 @@
     // If type just changed, rebuild path before advancing
     if (path[current] === "type") {
       path = buildPath();
-      showStep(1);
+      const typeIndex = path.indexOf("type");
+      showStep(typeIndex + 1);
       return;
     }
     showStep(current + 1);
